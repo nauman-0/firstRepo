@@ -1,57 +1,52 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
 
-template<typename T>
-void printArr(T arr[], int size) {
-    for (int i = 0; i < size; i++) {
-        cout << arr[i] << " ";
+class Employee {
+public:
+    virtual int calculateSalary() = 0;
+};
+
+class FullTimeEmployee : public Employee {
+private:
+    int monthlySalary;
+
+public:
+    void setSalary(int salary) {
+        monthlySalary = salary;
     }
-    cout << endl;
-}
 
-template<typename T>
-void selectionSort(T arr[], int size) {
-    for (int i = 0; i < size - 1; i++) {
-        int minIndex = i;
-
-        for (int j = i + 1; j < size; j++) {
-            if (arr[j] < arr[minIndex]) {
-                minIndex = j;
-            }
-        }
-
-        if (minIndex != i) {
-            T temp = arr[i];
-            arr[i] = arr[minIndex];
-            arr[minIndex] = temp;
-        }
+    int calculateSalary() {
+        return monthlySalary;
     }
-}
+};
+
+class PartTimeEmployee : public Employee {
+private:
+    int hoursWorked;
+    int hourlyRate;
+
+public:
+    void setWorkDetails(int hours, int rate) {
+        hoursWorked = hours;
+        hourlyRate = rate;
+    }
+
+    int calculateSalary() {
+        return hoursWorked * hourlyRate;
+    }
+};
 
 int main() {
+    FullTimeEmployee fullTime;
+    fullTime.setSalary(4500);
 
-    int arr[] = { 3,1,54,24,1,67,54,69,41,21,5 };
-    int size = sizeof(arr) / sizeof(arr[0]);
+    PartTimeEmployee partTime;
+    partTime.setWorkDetails(30, 20);
 
-    cout << "Original Array: ";
-    printArr(arr, size);
-
-    selectionSort(arr, size);
-
-    cout << "Sorted Array: ";
-    printArr(arr, size);
-
-    string stringArray[] = { "apple", "orange", "banana", "grape" };
-    int stringSize = sizeof(stringArray) / sizeof(stringArray[0]);
-
-    cout << "\nOriginal string array: ";
-    printArr(stringArray, stringSize);
-
-    selectionSort(stringArray, stringSize);
-
-    cout << "Sorted string array: ";
-    printArr(stringArray, stringSize);
+    cout << "Full time salary is: " << fullTime.calculateSalary() << endl;
+    cout << "Part time salary is: " << partTime.calculateSalary() << endl;
 
     return 0;
 }
